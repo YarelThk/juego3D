@@ -6,7 +6,7 @@ import { initEnemy, updateEnemy, enemy } from './enemy.js';
 import { initControls } from './controls.js';
 import { updateUI } from './ui.js';
 
-let clock = new THREE.Clock();
+const clock = new THREE.Clock();
 
 initScene();
 initControls();
@@ -14,13 +14,16 @@ initPlayer();
 initEnemy();
 
 function animate() {
+
     requestAnimationFrame(animate);
 
-    let delta = clock.getDelta();
+    const delta = clock.getDelta();
 
-    updatePlayer(delta);
-    updateEnemy(delta);
-    updateCamera(player, enemy); // cámara aquí
+    // 🧠 seguridad por carga async
+    if (player?.mesh) updatePlayer(delta);
+    if (enemy?.mesh) updateEnemy(delta, player);
+
+    updateCamera(player, enemy);
     updateUI();
 
     renderer.render(scene, camera);
