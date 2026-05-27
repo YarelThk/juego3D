@@ -1,9 +1,14 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Arena 3D - Combate</title>
     <link rel="stylesheet" href="styles/style.css">
+
+    <!-- WebXR: hint para Meta Quest 3 -->
+    <meta name="xr-spatial-tracking" content="">
 
     <script type="importmap">
     {
@@ -15,27 +20,82 @@
     </script>
 
 </head>
+
 <body>
+    <!-- Audio de fondo -->
+    <audio id="bgMusic" src="./assets/audio/bg.mp3" loop></audio>
 
-<div id="ui">
-    <div class="player-ui">
-        <h2>Jugador</h2>
-        <div class="bar health" id="playerHealth"></div>
-        <div class="bar energy" id="playerEnergy"></div>
+    <!-- Pantalla de Carga -->
+    <div id="loadingScreen" class="overlay">
+        <div class="loader-content">
+            <h1 class="glitch" data-text="CARGANDO...">CARGANDO...</h1>
+            <div class="progress-bar-container">
+                <div id="loadingProgress" class="progress-bar"></div>
+            </div>
+            <p class="loading-tip">TIP: Usa las teclas de movimiento para desplazarte</p>
+        </div>
     </div>
 
-    <div class="enemy-ui">
-        <h2>Enemigo</h2>
-        <div class="bar health enemy" id="enemyHealth"></div>
+    <!-- Pantalla de Inicio -->
+    <div id="startScreen" class="overlay hidden">
+        <div class="menu-content">
+            <h1 class="game-title">ARENA 3D</h1>
+            <div class="menu-options">
+                <button id="playBtn" class="menu-btn">JUGAR</button>
+
+                <div class="volume-control">
+                    <label for="volumeSlider">Volumen de Música</label>
+                    <input type="range" id="volumeSlider" min="0" max="1" step="0.01" value="0.5">
+                </div>
+            </div>
+        </div>
     </div>
-</div>
 
-<footer>
-    <h1>Arena 3D - Sistema de Combate</h1>
-    <p>WASD: mover | Shift: correr | k: atacar | l: patada | B: bloquear</p>
-</footer>
+    <!-- Pantalla de Victoria -->
+    <div id="winScreen" class="overlay hidden">
+        <div class="menu-content result-content">
+            <h1 class="game-title victory-title">¡VICTORIA!</h1>
+            <p>Has derrotado al enemigo.</p>
+            <p id="winScoreDisplay" class="score-display">Marcador: 0 - 0</p>
+            <button class="menu-btn" onclick="location.reload()">VOLVER A JUGAR</button>
+        </div>
+    </div>
 
-<script type="module" src="./js/main.js"></script>
+    <!-- Pantalla de Derrota -->
+    <div id="loseScreen" class="overlay hidden">
+        <div class="menu-content result-content">
+            <h1 class="game-title defeat-title">GAME OVER</h1>
+            <p>Try it again.</p>
+            <p id="loseScoreDisplay" class="score-display">Marcador: 0 - 0</p>
+            <button class="menu-btn" onclick="location.reload()">REINTENTAR</button>
+        </div>
+    </div>
+
+    <!-- UI Desktop (se oculta en VR; se usa panel 3D) -->
+    <div id="ui" class="hidden">
+        <div class="player-ui">
+            <h2>Jugador</h2>
+            <div class="bar health" id="playerHealth"></div>
+            <div class="bar energy" id="playerEnergy"></div>
+        </div>
+
+        <div class="enemy-ui">
+            <h2>Enemigo</h2>
+            <div class="bar health enemy" id="enemyHealth"></div>
+        </div>
+    </div>
+
+    <footer>
+        <h1>Arena 3D - Sistema de Combate</h1>
+        <p>
+            <strong>Desktop:</strong> WASD: mover | Shift: correr | K: puño | L: patada | B: bloquear | E: estado
+            &nbsp;|&nbsp;
+            <strong>Meta Quest 3:</strong> JoyL: mover | Trigger L: correr | X: puño | Y: patada | B: bloquear | A: estado
+        </p>
+    </footer>
+
+    <script type="module" src="./js/main.js"></script>
 
 </body>
+
 </html>

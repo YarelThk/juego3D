@@ -69,6 +69,17 @@ export class PhysicsWorld {
             step
         );
 
-        return !(center || left || right);
+        if (center || left || right) return false;
+
+        // Límite estricto de distancia para delimitar la arena de pelea (evita que caminen fuera del mapa)
+        const nextPos = position.clone().add(dir.clone().multiplyScalar(step));
+        const limiteArena = 28; // Radio seguro para no salir del escenario
+        const distFromCenter = Math.sqrt(nextPos.x * nextPos.x + nextPos.z * nextPos.z);
+        
+        if (distFromCenter > limiteArena) {
+            return false; // Bloquea el movimiento si intentan salir de la arena
+        }
+
+        return true;
     }
 }
